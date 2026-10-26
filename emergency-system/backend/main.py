@@ -9,7 +9,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="Smart Emergency System")
@@ -23,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 STALE_SEC = 60
 
@@ -258,6 +258,12 @@ public_dir = BASE_DIR / "public-app"
 shared_dir = BASE_DIR / "shared"
 
 
+def frontend_page(directory: Path, base_href: str) -> HTMLResponse:
+    page = (directory / "index.html").read_text(encoding="utf-8")
+    page = page.replace("<head>", f'<head>\n<base href="{base_href}">', 1)
+    return HTMLResponse(page)
+
+
 @app.get("/")
 def root():
     return {"driver_app": "/driver/", "public_app": "/public/", "health": "/health"}
@@ -270,12 +276,12 @@ def health():
 
 @app.get("/driver")
 def driver_app():
-    return FileResponse(driver_dir / "index.html")
+    return frontend_page(driver_dir, "/driver/")
 
 
 @app.get("/public")
 def public_app():
-    return FileResponse(public_dir / "index.html")
+    return frontend_page(public_dir, "/public/")
 
 
 if driver_dir.exists():

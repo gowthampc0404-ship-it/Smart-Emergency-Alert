@@ -16,8 +16,8 @@ Web-based GPS early-warning system in two independent apps sharing one FastAPI b
 
 ## Stack
 - **Backend:** Python FastAPI (`backend/main.py`)
-- **Frontends:** `driver-app/` and `public-app/` — HTML + CSS + JavaScript, browser Geolocation API for real GPS
-- **Connector:** `shared/connector.js` — one shared client module both apps include (API calls, GPS watch, alarm sound, notifications)
+- **Frontends:** `backend/driver-app/` and `backend/public-app/` — HTML + CSS + JavaScript, browser Geolocation API for real GPS
+- **Connector:** `backend/shared/connector.js` — shared client module (API calls, GPS watch, alarm sound, notifications)
 - **Map:** Leaflet + OpenStreetMap (loaded from CDN, needs internet)
 - **Notifications:** Web Notification API (must be granted permission)
 - **Distance:** Haversine formula, computed on the backend (Python)

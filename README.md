@@ -25,9 +25,9 @@ Web-based GPS early-warning system in two independently deployable websites shar
 > **Disclaimer:** College prototype. No traffic-signal control, no guaranteed delivery.
 
 ## Stack
-- **Backend:** Python FastAPI (`backend/main.py`)
-- **Frontends:** `driver-app/` and `public-app/` — HTML + CSS + JavaScript, browser Geolocation API for real GPS
-- **Connector:** `shared/connector.js` — one shared client module both apps include (API calls, GPS watch, alarm sound, notifications)
+- **Backend:** Python FastAPI (`emergency-system/backend/main.py`)
+- **Frontends:** `emergency-system/backend/driver-app/` and `emergency-system/backend/public-app/` — HTML + CSS + JavaScript, browser Geolocation API for real GPS
+- **Connector:** `emergency-system/backend/shared/connector.js` — shared client module (API calls, GPS watch, alarm sound, notifications)
 - **Map:** Leaflet + OpenStreetMap (loaded from CDN, needs internet)
 - **Notifications:** Web Notification API (must be granted permission)
 - **Distance:** Haversine formula, computed on the backend (Python)
@@ -36,8 +36,8 @@ Web-based GPS early-warning system in two independently deployable websites shar
 ## The two websites
 | | URL | Who | Main screens |
 |---|---|---|---|
-| 🚑 Driver website | `emergency-system/driver-app/` or `/driver/` | Ambulance driver | GPS, START/STOP SIREN, SOS, Citizen SOS inbox, map |
-| ⚕️ Public website | `emergency-system/public-app/` or `/public/` | Public | Enable alerts, distance/map, notifications, SOS back to driver, history |
+| 🚑 Driver website | `emergency-system/backend/driver-app/` or `/driver/` | Ambulance driver | GPS, START/STOP SIREN, SOS, Citizen SOS inbox, map |
+| ⚕️ Public website | `emergency-system/backend/public-app/` or `/public/` | Public | Enable alerts, distance/map, notifications, SOS back to driver, history |
 
 Each app folder contains its own HTML, JavaScript, CSS, connector, and `config.js`, so it can be deployed as a separate static website. Set `window.BACKEND_URL` in that folder's `config.js` to the HTTPS backend URL when hosting it separately.
 
