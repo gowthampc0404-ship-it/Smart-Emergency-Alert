@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚑 Ambulance Driver App</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/shared/driver.css?v=4">
+</head>
+<body>
+<header>
+  <h1>🚑 Ambulance Driver</h1>
+</header>
+<main>
+  <section class="card">
+    <h3>1. GPS Sharing</h3>
+    <div class="grid2">
+      <button id="startBtn" class="btn green" onclick="startSharing()">▶️ Start GPS</button>
+      <button id="stopBtn" class="btn gray" disabled onclick="stopSharing()">⏹️ Stop GPS</button>
+    </div>
+    <div class="status" id="gpsStatus">GPS: off</div>
+    <div class="status hidden" id="coords"></div>
+    <p class="hint">Allow location access when asked. Keep this page open while driving.</p>
+  </section>
+
+  <section class="card">
+    <h3>2. 🚨 Emergency Siren</h3>
+    <p class="hint">Turning the siren on instantly alerts EVERY phone with the Public app open — no code, no pairing needed. They detect you automatically.</p>
+    <div class="grid2">
+      <button id="bcStart" class="btn red" onclick="startBc()">🚨 START SIREN</button>
+      <button id="bcEnd" class="btn gray" onclick="endBc()">✔️ STOP SIREN</button>
+    </div>
+    <div id="sirenLive" class="hidden">
+      <div id="sirenText" class="distBig alarm">🚨 SIREN LIVE</div>
+      <div class="status warn" id="sirenStatus">Broadcasting to public…</div>
+    </div>
+    <div class="status" id="bcStatus">Siren: off</div>
+  </section>
+
+  <section class="card">
+    <h3>Live Status</h3>
+    <div class="status" id="liveStatus">Siren off — start GPS and turn the siren on</div>
+    <div id="map"></div>
+  </section>
+
+  <section class="card">
+    <button id="sosBtn" class="btn red big" onclick="askSOS()">🆘 SEND SOS ALERT</button>
+  </section>
+
+  <section class="card hidden" id="sosConfirm">
+    <h3 class="redText">Confirm SOS</h3>
+    <p class="hint">Shows a red SOS screen + alarm on EVERY public phone nearby.</p>
+    <div class="grid2">
+      <button class="btn red" onclick="sendSOS()">Yes, send</button>
+      <button class="btn gray" onclick="hideEl('sosConfirm')">Cancel</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="citizenCard">
+    <h3>Citizen SOS Inbox <span id="citizenCount" class="tag"></span></h3>
+    <ul id="citizenList" class="hist"></ul>
+    <button class="btn gray" onclick="hideEl('citizenCard')">Close</button>
+  </section>
+
+  <section class="card">
+    <h3>Tools</h3>
+    <div class="grid2">
+      <button class="btn gray" onclick="showCitizen()">📮 Citizen SOS</button>
+      <button class="btn gray" onclick="window.open('/public', '_blank')">📱 Live public app</button>
+    </div>
+  </section>
+</main>
+<script src="/shared/connector.js"></script>
+<script src="/driver-static/app.js?v=2"></script>
+</body>
+</html>

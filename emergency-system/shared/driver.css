@@ -1,0 +1,35 @@
+:root { --main:#b91c1c; --ok:#16a34a; --warn:#f59e0b; --gray:#475569; --bg:#faf1f1; }
+* { box-sizing:border-box; font-family:system-ui,Segoe UI,Arial,sans-serif; }
+body { margin:0; background:var(--bg); color:#111; }
+header { background:var(--main); color:#fff; padding:16px; text-align:center; }
+header h1 { margin:0; font-size:19px; }
+main { max-width:520px; margin:0 auto; padding:12px; }
+.card { background:#fff; border-radius:12px; padding:14px; margin-bottom:12px; box-shadow:0 1px 4px rgba(0,0,0,.09); }
+h3 { margin:0 0 10px; }
+.btn { width:100%; border:none; border-radius:10px; padding:12px; font-size:15px; cursor:pointer; color:#fff; background:var(--main); }
+.btn:disabled { opacity:.4; cursor:not-allowed; }
+.btn.green { background:var(--ok); } .btn.gray { background:var(--gray); } .btn.red { background:var(--main); }
+.btn.big { padding:18px; font-size:17px; font-weight:600; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.status { font-size:14px; padding:9px 12px; border-radius:8px; background:#eef2f7; margin-top:10px; }
+.status.ok { background:#dcfce7; } .status.warn { background:#fef3c7; } .status.bad { background:#fee2e2; }
+#code { font-size:34px; font-weight:800; letter-spacing:6px; color:var(--main); text-align:center; padding:4px 0; }
+.hint { font-size:13px; color:#64748b; margin:8px 0 0; }
+.redText { color:var(--main); }
+#map { height:260px; border-radius:10px; margin-top:8px; }
+.hidden { display:none !important; }
+.tag { font-size:12px; background:#eef2f7; border-radius:6px; padding:2px 8px; vertical-align:middle; }
+.tag.on { background:#dcfce7; }
+.hist { margin:6px 0 8px; padding-left:18px; font-size:14px; }
+.hist li { margin-bottom:6px; }
+.btn.amber { background:var(--warn); }
+
+.distBig { font-size:40px; font-weight:900; text-align:center; color:var(--gray); }
+.distBig.alarm { color:var(--red); }
+body.alert-mode { background:var(--darkred,#450a0a); }
+body.alert-mode header { background:#450a0a; }
+body.alert-mode .card { background:#fff1f0; border:1px solid #fca5a5; }
+body.alert-mode .distBig.alarm { animation:pulse .9s infinite alternate; }
+@keyframes pulse { from{transform:scale(1)} to{transform:scale(1.12)} }
+body { transition:background .6s; }
+header { transition:background .6s; }
