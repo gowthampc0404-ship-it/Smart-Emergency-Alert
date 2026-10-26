@@ -1,7 +1,7 @@
 # Smart Emergency System — GPS Ambulance Early-Warning (College Prototype)
 #DEMO LINKS:
-#Driver app:https://robots-chrome-casey-nottingham.trycloudflare.com/driver
-#Public Link:https://robots-chrome-casey-nottingham.trycloudflare.com/public
+#Driver app:https://smartemergencyalert.vercel.app/driver
+#Public Link:https://smartemergencyalert.vercel.app/public
 
 WE USED CLOUDFLARE FOR FREE HOSTING 
 
