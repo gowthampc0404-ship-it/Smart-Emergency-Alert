@@ -262,10 +262,14 @@ def public_app():
     return FileResponse(public_dir / "index.html")
 
 
-app.mount("/driver-static", StaticFiles(directory=driver_dir), name="driver")
-app.mount("/public-static", StaticFiles(directory=public_dir), name="public")
-app.mount("/shared", StaticFiles(directory=shared_dir), name="shared")
+if driver_dir.exists():
+    app.mount("/driver-static", StaticFiles(directory=driver_dir), name="driver")
 
+if public_dir.exists():
+    app.mount("/public-static", StaticFiles(directory=public_dir), name="public")
+
+if shared_dir.exists():
+    app.mount("/shared", StaticFiles(directory=shared_dir), name="shared")
 
 
 class DeviceRegister(BaseModel):
