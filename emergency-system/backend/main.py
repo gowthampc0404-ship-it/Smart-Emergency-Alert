@@ -278,8 +278,10 @@ def public_app():
     return RedirectResponse("/public/")
 
 
-app.mount("/driver", StaticFiles(directory=driver_dir, html=True), name="driver-site")
-app.mount("/public", StaticFiles(directory=public_dir, html=True), name="public-site")
+if driver_dir.exists():
+    app.mount("/driver", StaticFiles(directory=driver_dir, html=True), name="driver-site")
+if public_dir.exists():
+    app.mount("/public", StaticFiles(directory=public_dir, html=True), name="public-site")
 
 
 # The backend is also deployed by itself on Vercel. In that deployment the
