@@ -1,4 +1,6 @@
 # Smart Emergency Alert — Two Independent Emergency Websites
+
+Vercel deployment: backend and both websites are deployable from the `main` branch.
 This project has two separate websites connected by one backend:
 
 - **Driver website** — ambulance GPS, siren broadcast, SOS trigger, and citizen SOS inbox.
