@@ -9,7 +9,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="Smart Emergency System")
@@ -270,12 +270,12 @@ def health():
 
 @app.get("/driver")
 def driver_app():
-    return RedirectResponse("/driver/")
+    return FileResponse(driver_dir / "index.html")
 
 
 @app.get("/public")
 def public_app():
-    return RedirectResponse("/public/")
+    return FileResponse(public_dir / "index.html")
 
 
 if driver_dir.exists():
