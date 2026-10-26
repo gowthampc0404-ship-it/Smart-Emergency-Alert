@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚕️ Public Emergency App</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="/shared/public.css?v=4">
+</head>
+<body>
+<div id="sosScreen" class="sos-screen hidden">
+  <div class="sos-icon">🆘</div>
+  <div id="sosScreenMsg" class="sos-title">SOS EMERGENCY</div>
+  <div id="sosScreenInfo" class="sos-sub">An ambulance has triggered an SOS nearby</div>
+  <button class="sos-dismiss" onclick="dismissSosScreen()">I SEE IT — STOP ALERT</button>
+</div>
+<header id="topbar">
+  <h1>⚕️ Public Emergency App</h1>
+</header>
+<main>
+  <div id="banner" class="banner"></div>
+
+  <section class="card" id="startCard">
+    <h3>🚨 One Tap — Start Receiving Alerts</h3>
+    <button id="armBtn" class="btn red big" onclick="arm()">🆘 ENABLE EMERGENCY ALERTS</button>
+    <p class="hint">Tap once: allows sound + notifications. Then just keep this page open — any ambulance siren broadcast reaches you automatically. No codes, no joining.</p>
+    <div class="status" id="armStatus">Not started — tap the red button</div>
+  </section>
+
+  <section class="card hidden" id="alertPanel">
+    <div id="distanceBig" class="distBig">🚨 LISTENING</div>
+    <div class="status" id="liveStatus">Listening for emergency broadcasts…</div>
+  </section>
+
+  <section class="card">
+    <h3>Live Map</h3>
+    <div id="map"></div>
+  </section>
+
+  <section class="card">
+    <h3>Quick Actions</h3>
+    <div class="grid2">
+      <button class="btn gray" onclick="myGpsToggle()">📍 My Location On/Off</button>
+      <button class="btn gray" onclick="openHistoryCard()">📜 Alert History</button>
+      <button class="btn amber" onclick="testSound()">🔊 Test Alarm Sound</button>
+      <button id="sosBtn" class="btn red" onclick="askSOS()">🆘 SEND SOS</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="historyCard">
+    <h3>Alert History</h3>
+    <ul id="historyList" class="hist"></ul>
+    <button class="btn gray" onclick="hideEl('historyCard')">Close</button>
+  </section>
+
+  <section class="card hidden" id="sosConfirm">
+    <h3 class="redText">Confirm SOS</h3>
+    <p class="hint">Nearby ambulance drivers will hear your SOS.</p>
+    <div class="grid2">
+      <button class="btn red" onclick="sendSOS()">Yes, send</button>
+      <button class="btn gray" onclick="hideEl('sosConfirm')">Cancel</button>
+    </div>
+  </section>
+
+  <p class="hint">Prototype — does not replace real emergency services (call 108 in real emergencies).</p>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/shared/connector.js?v=2"></script>
+<script src="/public-static/app.js"></script>
+</body>
+</html>
