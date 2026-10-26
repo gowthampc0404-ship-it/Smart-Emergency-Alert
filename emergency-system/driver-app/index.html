@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🚑 Ambulance Driver App</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="/shared/driver.css?v=4">
+<link rel="stylesheet" href="./driver.css?v=5">
 </head>
 <body>
 <header>
@@ -66,11 +66,12 @@
     <h3>Tools</h3>
     <div class="grid2">
       <button class="btn gray" onclick="showCitizen()">📮 Citizen SOS</button>
-      <button class="btn gray" onclick="window.open('/public', '_blank')">📱 Live public app</button>
+      <button class="btn gray" onclick="window.open(window.PUBLIC_APP_URL || '#', '_blank')">📱 Live public app</button>
     </div>
   </section>
 </main>
-<script src="/shared/connector.js"></script>
-<script src="/driver-static/app.js?v=2"></script>
+<script src="./config.js"></script>
+<script src="./connector.js"></script>
+<script src="./app.js?v=3"></script>
 </body>
 </html>

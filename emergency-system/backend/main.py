@@ -2,15 +2,26 @@ import math
 import time
 import uuid
 import secrets
+import os
 from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="Smart Emergency System")
+
+cors_origins = [x.strip() for x in os.getenv("EMERGENCY_CORS_ORIGINS", "*").split(",") if x.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -249,22 +260,36 @@ shared_dir = BASE_DIR / "shared"
 
 @app.get("/")
 def root():
-    return {"driver_app": "/driver", "public_app": "/public", "connector": "/shared/connector.js"}
+    return {"driver_app": "/driver/", "public_app": "/public/", "health": "/health"}
+
+
+@app.get("/health")
+def health():
+    return {"ok": True, "service": "smart-emergency-alert"}
 
 
 @app.get("/driver")
 def driver_app():
-    return FileResponse(driver_dir / "index.html")
+    return RedirectResponse("/driver/")
 
 
 @app.get("/public")
 def public_app():
-    return FileResponse(public_dir / "index.html")
+    return RedirectResponse("/public/")
 
 
-app.mount("/driver-static", StaticFiles(directory=driver_dir), name="driver")
-app.mount("/public-static", StaticFiles(directory=public_dir), name="public")
-app.mount("/shared", StaticFiles(directory=shared_dir), name="shared")
+app.mount("/driver", StaticFiles(directory=driver_dir, html=True), name="driver-site")
+app.mount("/public", StaticFiles(directory=public_dir, html=True), name="public-site")
+
+
+# The backend is also deployed by itself on Vercel. In that deployment the
+# frontend folders may not be bundled, so only mount them when they exist.
+if driver_dir.exists():
+    app.mount("/driver-static", StaticFiles(directory=driver_dir), name="driver")
+if public_dir.exists():
+    app.mount("/public-static", StaticFiles(directory=public_dir), name="public")
+if shared_dir.exists():
+    app.mount("/shared", StaticFiles(directory=shared_dir), name="shared")
 
 
 
@@ -286,10 +311,6 @@ class BroadcastMessage(BaseModel):
 
 class BroadcastSOSRequest(BaseModel):
     message: str = "SOS EMERGENCY from ambulance driver"
-
-
-class BroadcastSOS(BaseModel):
-    message: str = "SOS EMERGENCY from ambulance"
 
 
 class PublicSOS(BaseModel):
@@ -328,7 +349,7 @@ def broadcast_end():
 
 
 @app.post("/api/broadcast/sos")
-def broadcast_sos(body: BroadcastSOS):
+def broadcast_sos(body: BroadcastSOSRequest):
     now = time.time()
     broadcast["active"] = True
     broadcast["message"] = body.message
@@ -350,17 +371,6 @@ def broadcast_ambulance_location(body: BroadcastLocation):
     }
     broadcast["amb_ts"] = time.time()
     return {"ok": True}
-
-
-@app.post("/api/broadcast/sos")
-def broadcast_sos(body: BroadcastSOSRequest):
-    entry = {
-        "id": str(uuid.uuid4())[:8],
-        "ts": time.time(),
-        "message": body.message,
-    }
-    broadcast["sos"] = entry
-    return {"ok": True, "sos": entry}
 
 
 @app.get("/api/broadcast")

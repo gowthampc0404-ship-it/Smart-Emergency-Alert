@@ -1,11 +1,14 @@
-# Smart Emergency System — GPS Ambulance Early-Warning (College Prototype)
-DEMO LINKS:
-Driver app:https://robots-chrome-casey-nottingham.trycloudflare.com/driver
-Public Link:https://robots-chrome-casey-nottingham.trycloudflare.com/public
+# Smart Emergency Alert — Two Independent Emergency Websites
+This project has two separate websites connected by one backend:
+
+- **Driver website** — ambulance GPS, siren broadcast, SOS trigger, and citizen SOS inbox.
+- **Public website** — automatic alerts, ambulance distance/map, full-screen SOS, and citizen SOS.
+
+The old Cloudflare demo links were temporary and are intentionally not treated as permanent URLs.
 
 WE USED CLOUDFLARE FOR FREE HOSTING 
 
-Web-based GPS early-warning system in two independent apps sharing one FastAPI backend.
+Web-based GPS early-warning system in two independently deployable websites sharing one FastAPI backend.
 **No pairing codes — the driver app and public app connect automatically over the internet.**
 
 ## 📡 How it works (no codes, no pairing)
@@ -28,11 +31,26 @@ Web-based GPS early-warning system in two independent apps sharing one FastAPI b
 - **Distance:** Haversine formula, computed on the backend (Python)
 - **Public access:** served locally via uvicorn; expose with a tunnel (e.g. `cloudflared tunnel --url http://127.0.0.1:8000`) for public URLs
 
-## The two apps
+## The two websites
 | | URL | Who | Main screens |
 |---|---|---|---|
-| 🚑 Driver App | `/driver` | Ambulance driver | Start/Stop GPS, START/STOP SIREN broadcast, live status (public apps online), SOS (with confirm), Citizen SOS inbox, map |
-| ⚕️ Public App | `/public` | Public | One-tap Enable Alerts, distance to ambulance, alert banners + notifications, map both markers, SOS back to drivers, alert history |
+| 🚑 Driver website | `emergency-system/driver-app/` or `/driver/` | Ambulance driver | GPS, START/STOP SIREN, SOS, Citizen SOS inbox, map |
+| ⚕️ Public website | `emergency-system/public-app/` or `/public/` | Public | Enable alerts, distance/map, notifications, SOS back to driver, history |
+
+Each app folder contains its own HTML, JavaScript, CSS, connector, and `config.js`, so it can be deployed as a separate static website. Set `window.BACKEND_URL` in that folder's `config.js` to the HTTPS backend URL when hosting it separately.
+
+For example:
+
+```js
+window.BACKEND_URL = "https://api.example.com";
+```
+
+Then configure the backend with the two website origins:
+
+```powershell
+$env:EMERGENCY_CORS_ORIGINS = "https://driver.example.com,https://public.example.com"
+py -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
 
 ## Features
 1. Real GPS via browser `navigator.geolocation.watchPosition` with permission handling

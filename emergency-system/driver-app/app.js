@@ -12,6 +12,7 @@ function setStatus(id, text, cls) {
 
 function startSharing() {
   document.getElementById("startBtn").disabled = true;
+  document.getElementById("stopBtn").disabled = false;
   watchId = Connector.startGPS(onFix, onErr, 2000);
 }
 
@@ -59,24 +60,18 @@ function startBc() {
   Connector.startBroadcast("Ambulance emergency nearby — keep roads clear").then(() => {
     broadcasting = true;
     document.getElementById("bcStart").disabled = true;
-    const t = document.getElementById("bcTag");
-    t.textContent = "SIREN LIVE 🚨";
-    t.classList.add("on");
     show("sirenLive");
     setStatus("bcStatus", "🚨 SIREN LIVE — every public phone is alerted automatically", "ok");
-  });
+  }).catch(() => setStatus("bcStatus", "Could not start the siren — check the backend connection", "bad"));
 }
 
 function endBc() {
   Connector.endBroadcast().then(() => {
     broadcasting = false;
     document.getElementById("bcStart").disabled = false;
-    const t = document.getElementById("bcTag");
-    t.textContent = "";
-    t.classList.remove("on");
     hideEl("sirenLive");
     setStatus("bcStatus", "Siren: off", "");
-  });
+  }).catch(() => setStatus("bcStatus", "Could not stop the siren — check the backend connection", "bad"));
 }
 
 function askSOS() {
